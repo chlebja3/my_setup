@@ -239,3 +239,9 @@ sudo pacman -S --noconfirm --needed gcc make git ripgrep fd unzip neovim
 ```
 </details>
 
+# my additions
+# go to home directory and create a symlink for neovim
+``` ln -s ~/my_setup/config/nvim ~/.config/nvim ```
+
+# add this to the .bashrc
+```source "$HOME/my_setup/config/tmux/bashrc"```
