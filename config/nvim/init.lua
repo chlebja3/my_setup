@@ -166,6 +166,11 @@ vim.o.scrolloff = 10
 -- See `:help 'confirm'`
 vim.o.confirm = true
 
+vim.o.tabstop = 2 -- Number of visual spaces per TAB
+vim.o.shiftwidth = 2 -- Number of spaces for each indentation
+vim.o.expandtab = true -- Convert tabs to spaces
+vim.o.softtabstop = 2 -- Number of spaces that a <Tab> counts for while editing
+
 -- [[ Basic Keymaps ]]
 --  See `:help vim.keymap.set()`
 
@@ -671,7 +676,7 @@ require('lazy').setup({
       --  - settings (table): Override the default settings passed when initializing the server.
       --        For example, to see the options for `lua_ls`, you could go to: https://luals.github.io/wiki/settings/
       local servers = {
-        -- clangd = {},
+        clangd = {},
         -- gopls = {},
         -- pyright = {},
         -- rust_analyzer = {},

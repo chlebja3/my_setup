@@ -7,3 +7,6 @@ fi
 :q() {
   exit
 }
+
+# create alias for vim
+alias vim="nvim"
