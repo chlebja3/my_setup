@@ -678,7 +678,8 @@ require('lazy').setup({
       local servers = {
         clangd = {},
         -- gopls = {},
-        -- pyright = {},
+        pyright = {},
+        -- pylsp = {},
         -- rust_analyzer = {},
         -- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
         --
@@ -989,7 +990,7 @@ require('lazy').setup({
   --    This is the easiest way to modularize your config.
   --
   --  Uncomment the following line and add your plugins to `lua/custom/plugins/*.lua` to get going.
-  -- { import = 'custom.plugins' },
+  { import = 'custom.plugins' },
   --
   -- For additional information with loading, sourcing and examples see `:help lazy.nvim-🔌-plugin-spec`
   -- Or use telescope!
@@ -1016,6 +1017,26 @@ require('lazy').setup({
     },
   },
 })
+
+-- copilot settings
+-- Disable Copilot by default
+vim.g.copilot_enabled = false
+
+-- Function to toggle Copilot
+function _G.toggle_copilot()
+  if vim.g.copilot_enabled then
+    vim.g.copilot_enabled = false
+    vim.cmd 'Copilot disable'
+    print 'Copilot: OFF'
+  else
+    vim.g.copilot_enabled = true
+    vim.cmd 'Copilot enable'
+    print 'Copilot: ON'
+  end
+end
+
+-- Map <leader>cp to toggle Copilot
+vim.api.nvim_set_keymap('n', '<C-J>', ':lua toggle_copilot()<CR>', { noremap = true, silent = true })
 
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et
