@@ -1039,19 +1039,42 @@ end
 vim.api.nvim_set_keymap('n', '<C-J>', ':lua toggle_copilot()<CR>', { noremap = true, silent = true })
 
 -- insert header when creating new files in Cpp
+-- vim.api.nvim_create_autocmd('BufNewFile', {
+--   pattern = { '*.cpp', '*.h', '*.c' }, -- apply to all new files; you can use e.g. "*.py", "*.c" etc.
+--   callback = function()
+--     local header = string.format(
+--       [[
+-- /*
+--  * Author: Jan Chleboun
+--  * Date: %s
+--  * Email: chlebja3@fel.cvut.cz
+--  * Description:
+--  */
+-- ]],
+--       os.date '%Y-%m-%d'
+--     )
+--
+--     -- Insert the header at the top of the buffer
+--     vim.api.nvim_buf_set_lines(0, 0, 0, false, vim.split(header, '\n'))
+--     -- Move cursor to the "Description:" line
+--     vim.api.nvim_win_set_cursor(0, { 5, 15 })
+--   end,
+-- })
+
 vim.api.nvim_create_autocmd('BufNewFile', {
   pattern = { '*.cpp', '*.h', '*.c' }, -- apply to all new files; you can use e.g. "*.py", "*.c" etc.
   callback = function()
     local header = string.format(
       [[
 /*
- * Author: Jan Chleboun
- * Date: %s
- * Email: chlebja3@fel.cvut.cz
- * Description: 
+ * @file
+ * @brief
+ *
+ * @author: Jan Chleboun <chlebja3@fel.cvut.cz>
+ * @date: %s
  */
 ]],
-      os.date '%Y-%m-%d'
+      os.date '%d-%m-%Y'
     )
 
     -- Insert the header at the top of the buffer
@@ -1074,7 +1097,7 @@ Email: chlebja3@fel.cvut.cz
 Description: 
 '''
 ]],
-      os.date '%Y-%m-%d'
+      os.date '%d-%m-%Y'
     )
 
     -- Insert the header at the top of the buffer
