@@ -17,7 +17,7 @@ from [Oh My Tmux](https://github.com/gpakosz/.tmux); both have been modified.
 | `config/tmux/tmux.conf` | Oh My Tmux base configuration, not meant to be edited |
 | `config/tmux/tmux.conf.local` | Personal tmux overrides, edit this one |
 | `config/nvim/` | Neovim configuration, kickstart based, entry point is `init.lua` |
-| `config/nvim/lua/custom/plugins/` | Personal plugin specs, currently Copilot and CopilotChat |
+| `config/nvim/lua/custom/plugins/` | Personal plugin specs: Copilot, CopilotChat, markdown rendering |
 | `config/nvim/lua/kickstart/plugins/` | Optional kickstart plugins, enabled from `init.lua` |
 
 ## Requirements
@@ -93,6 +93,18 @@ accepts a suggestion in insert mode. It is restricted to Python, C++ and Lua buf
 | `<leader>cce` | normal | Explain the code |
 | `<leader>cct` | visual | Generate tests for the selection |
 | `<leader>ccx` | visual | Chat about the selection |
+
+**Markdown** is rendered inside the buffer as you edit it, through
+render-markdown.nvim. Headings, code blocks, tables, bullets, checkboxes and
+links are drawn in place, while the line under the cursor stays raw so it is
+still editable. Press `<leader>tm` in normal mode to toggle rendering off and on.
+
+The icons are deliberately plain characters so they display in any terminal,
+because `vim.g.have_nerd_font` is `false`. If you install a Nerd Font, set that
+variable to `true` in `init.lua` and delete the `opts` table in
+`config/nvim/lua/custom/plugins/render-markdown.lua` to get the nicer default
+glyphs. LaTeX rendering is switched off, since it needs a separate parser and
+the `utftex` or `latex2text` binary.
 
 **File headers** are inserted automatically into new files. C, C++ and header files
 get a Doxygen block with `@file`, `@brief`, author and date. Python files get a
