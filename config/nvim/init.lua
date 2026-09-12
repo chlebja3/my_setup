@@ -189,7 +189,15 @@ vim.diagnostic.config {
   virtual_lines = false, -- Text shows up underneath the line, with virtual lines
 
   -- Auto open the float, so you can easily read the errors when jumping with `[d` and `]d`
-  jump = { float = true },
+  jump = {
+    on_jump = function(_, bufnr)
+      vim.diagnostic.open_float {
+        bufnr = bufnr,
+        scope = 'cursor',
+        focus = false,
+      }
+    end,
+  },
 }
 
 vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagnostic [Q]uickfix list' })
@@ -504,7 +512,12 @@ require('lazy').setup({
         opts = {},
       },
       -- Maps LSP server names between nvim-lspconfig and Mason package names.
-      'mason-org/mason-lspconfig.nvim',
+      {
+        'mason-org/mason-lspconfig.nvim',
+        -- Setting this up is required, leaving it unconfigured is undefined behaviour.
+        -- Servers are enabled by the loop further down, not by this plugin.
+        opts = { automatic_enable = false },
+      },
       'WhoIsSethDaniel/mason-tool-installer.nvim',
 
       -- Useful status updates for LSP.
@@ -642,10 +655,7 @@ require('lazy').setup({
                 checkThirdParty = false,
                 -- NOTE: this is a lot slower and will cause issues when working on your own configuration.
                 --  See https://github.com/neovim/nvim-lspconfig/issues/3189
-                library = vim.tbl_extend('force', vim.api.nvim_get_runtime_file('', true), {
-                  '${3rd}/luv/library',
-                  '${3rd}/busted/library',
-                }),
+                library = vim.api.nvim_get_runtime_file('', true),
               },
             })
           end,
@@ -919,6 +929,10 @@ require('lazy').setup({
       local function treesitter_try_attach(buf, language)
         -- Check if a parser exists and load it
         if not vim.treesitter.language.add(language) then return end
+
+        -- Check if the buffer is valid (might not be after install completes)
+        if not vim.api.nvim_buf_is_valid(buf) then return end
+
         -- Enable syntax highlighting and other treesitter features
         vim.treesitter.start(buf, language)
 
