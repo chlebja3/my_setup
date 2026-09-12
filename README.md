@@ -53,12 +53,11 @@ Link the Neovim configuration. Back up or remove any existing `~/.config/nvim` f
 ln -s ~/my_setup/config/nvim ~/.config/nvim
 ```
 
-Link the tmux configuration. Oh My Tmux expects the base file to be linked and the
-`.local` file to be a real file you edit.
+Link the tmux configuration. tmux reads the whole directory, so one link covers both
+the base file and your overrides.
 
 ```sh
-ln -s ~/my_setup/config/tmux/tmux.conf ~/.tmux.conf
-ln -s ~/my_setup/config/tmux/tmux.conf.local ~/.tmux.conf.local
+ln -s ~/my_setup/config/tmux ~/.config/tmux
 ```
 
 Source the shell snippet from your own `~/.bashrc`.
@@ -126,8 +125,14 @@ you change the name and email.
 ## tmux
 
 `config/tmux/tmux.conf` is the upstream Oh My Tmux file and should be left alone so it
-stays easy to update. Put every personal change in `config/tmux/tmux.conf.local`.
-Reload a running session with `<prefix> r`.
+stays easy to update, which is exactly what makes replacing it with a newer upstream
+copy safe. Put every personal change in `config/tmux/tmux.conf.local`. Reload a
+running session with `<prefix> r`.
+
+The local overrides are small: vi keys in the status prompt and in copy mode,
+`<prefix> t` to open a window in the current directory, Ctrl with the left and right
+arrows to change window, Alt with the arrows to change pane, and dropping plugins
+that are no longer listed whenever the configuration is reloaded.
 
 ## Customizing
 
