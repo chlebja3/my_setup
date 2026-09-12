@@ -12,7 +12,7 @@ from [Oh My Tmux](https://github.com/gpakosz/.tmux); both have been modified.
 
 | Path | Contents |
 | :--- | :--- |
-| `install.sh` | Installs system packages (build tools, git, ripgrep, tmux, Neovim) with `apt` |
+| `install.sh` | Installs system packages with `apt`, plus Neovim from its official release |
 | `config/bash/bashrc` | Shell snippet: auto-attach to tmux, `vim` alias, `:q` to exit |
 | `config/tmux/tmux.conf` | Oh My Tmux base configuration, not meant to be edited |
 | `config/tmux/tmux.conf.local` | Personal tmux overrides, edit this one |
@@ -22,18 +22,20 @@ from [Oh My Tmux](https://github.com/gpakosz/.tmux); both have been modified.
 
 ## Requirements
 
-`install.sh` covers the base packages. A few things it does not install yet, needed
-only if you want the matching feature:
+Neovim 0.12 or newer. This is not optional: nvim-treesitter installs parsers through
+APIs that only exist from that release. The version carried by `apt` is far older, so
+`install.sh` fetches the official release binary instead.
 
-- `nodejs` and `npm` for GitHub Copilot
-- `clang-format` for C and C++ formatting
-- `isort` and `black` for Python formatting
+`install.sh` covers the system packages. Editor tooling is handled separately by
+Mason, which installs into `~/.local/share/nvim/mason` on first launch and never
+touches system or global Python packages. Mason provides the language servers
+(`clangd`, `pyright`, `lua_ls`), the formatters (`stylua`, `black`, `isort`) and the
+`tree-sitter` CLI used to build parsers.
+
+Two things are still left to you:
+
 - `luarocks` for the CopilotChat `make tiktoken` build step
-- A [Nerd Font](https://www.nerdfonts.com/) in your terminal for icons
-- A clipboard tool such as `xclip` or `xsel`
-
-Python tooling should go into a virtual environment or use `pipx` rather than a
-global `pip install`.
+- A [Nerd Font](https://www.nerdfonts.com/) in your terminal if you want icons
 
 ## Installation
 
@@ -69,6 +71,10 @@ Open a new terminal. It attaches to a tmux session called `default`, creating it
 needed. Start `nvim` and lazy.nvim installs every plugin on first launch. Run `:Lazy`
 to watch progress and `:checkhealth` afterwards to confirm the setup.
 
+On that very first launch Mason is still downloading the `tree-sitter` CLI while
+nvim-treesitter is already trying to build parsers, so a few parsers report a build
+error. Quit and start `nvim` again and they build cleanly. This only happens once.
+
 ## Neovim
 
 Leader key is `<space>`. `init.lua` is a single documented file, so searching it is
@@ -76,11 +82,17 @@ the fastest way to find how something is wired.
 
 **Language servers**, installed automatically through Mason: `clangd`, `pyright` and
 `lua_ls`. Treesitter parsers for bash, c, diff, html, lua, luadoc, markdown, query,
-vim and vimdoc.
+vim and vimdoc are installed up front, and any other language is fetched and built
+the first time you open a file of that type. Treesitter also drives indentation,
+falling back to Vim's built-in rules for languages with no indent query.
 
-**Formatting** runs on save through conform.nvim. Lua uses `stylua`, Python uses
-`isort` then `black`, and C and C++ use `clang-format` with `--style=file`, so a
-`.clang-format` in the project root decides the style. `<leader>f` formats manually.
+**Formatting** runs on save. Python uses `isort` then `black` and C and C++ use
+`clang-format` with `--style=file`, so a `.clang-format` in the project root decides
+the style, both through conform.nvim. Lua is formatted by `stylua` running as a
+language server rather than through conform, which is why `lua_ls` has its own
+formatting switched off. Every other filetype falls back to its language server.
+Plain C is the one exception and is never formatted on save. `<leader>f` formats
+manually.
 
 **GitHub Copilot** is disabled at startup. `<C-J>` toggles it in normal mode and
 accepts a suggestion in insert mode. It is restricted to Python, C++ and Lua buffers.
