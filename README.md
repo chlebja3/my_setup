@@ -8,6 +8,37 @@ This is a dotfiles repository, not a Neovim distribution. The Neovim part starte
 from [kickstart.nvim](https://github.com/nvim-lua/kickstart.nvim) and the tmux part
 from [Oh My Tmux](https://github.com/gpakosz/.tmux); both have been modified.
 
+Every keybinding is written down in the [shortcuts guide](docs/SHORTCUTS.md),
+ordered so the keys you need on the first day come first.
+
+## What it looks like
+
+Neovim editing Python. Treesitter colours the syntax, pyright reports an
+unresolved import inline, and the statusline carries the error count and the
+attached language server.
+
+![Neovim editing a Python file](docs/images/nvim-python.png)
+
+`<leader>sf` opens the file finder with a live preview of the selected file.
+`<leader>sg` does the same for text across the whole project.
+
+![Telescope finding files](docs/images/telescope.png)
+
+Press the leader key and pause. which-key lists everything that starts with it,
+so the keymaps are discoverable rather than memorised.
+
+![The which-key leader menu](docs/images/which-key.png)
+
+Markdown is drawn inside the buffer as you edit it. The line under the cursor
+drops back to raw text so it stays editable.
+
+![Markdown rendered inside the buffer](docs/images/markdown.png)
+
+tmux holding three panes: the editor, a git log and a shell. Alt with the arrow
+keys moves between panes, Ctrl with the arrows changes window.
+
+![tmux with three panes](docs/images/tmux-panes.png)
+
 ## What is in here
 
 | Path | Contents |
@@ -19,6 +50,7 @@ from [Oh My Tmux](https://github.com/gpakosz/.tmux); both have been modified.
 | `config/nvim/` | Neovim configuration, kickstart based, entry point is `init.lua` |
 | `config/nvim/lua/custom/plugins/` | Personal plugin specs: Copilot, CopilotChat, markdown rendering |
 | `config/nvim/lua/kickstart/plugins/` | Optional kickstart plugins, enabled from `init.lua` |
+| `docs/SHORTCUTS.md` | Every keybinding, most useful first |
 
 ## Requirements
 
@@ -77,7 +109,8 @@ error. Quit and start `nvim` again and they build cleanly. This only happens onc
 ## Neovim
 
 Leader key is `<space>`. `init.lua` is a single documented file, so searching it is
-the fastest way to find how something is wired.
+the fastest way to find how something is wired. The keys themselves are in the
+[shortcuts guide](docs/SHORTCUTS.md); this section covers how the pieces are set up.
 
 **Language servers**, installed automatically through Mason: `clangd`, `pyright` and
 `lua_ls`. Treesitter parsers for bash, c, diff, html, lua, luadoc, markdown, query,
@@ -133,6 +166,8 @@ The local overrides are small: vi keys in the status prompt and in copy mode,
 `<prefix> t` to open a window in the current directory, Ctrl with the left and right
 arrows to change window, Alt with the arrows to change pane, and dropping plugins
 that are no longer listed whenever the configuration is reloaded.
+
+Pane and window bindings are listed in the [shortcuts guide](docs/SHORTCUTS.md).
 
 ## Customizing
 
