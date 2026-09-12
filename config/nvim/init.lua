@@ -1066,6 +1066,12 @@ vim.api.nvim_set_keymap('n', '<C-J>', ':lua toggle_copilot()<CR>', { noremap = t
 --   end,
 -- })
 
+-- keymaps for CopilotChat
+vim.keymap.set('n', '<leader>cc', '<cmd>CopilotChat<cr>', { desc = 'CopilotChat' })
+vim.keymap.set('n', '<leader>cce', '<cmd>CopilotChatExplain<cr>', { desc = 'Explain Code' })
+vim.keymap.set('v', '<leader>cct', '<cmd>CopilotChatTests<cr>', { desc = 'Generate Tests' })
+vim.keymap.set('v', '<leader>ccx', '<cmd>CopilotChat<cr>', { desc = 'Inline Chat (Visual)' })
+
 vim.api.nvim_create_autocmd('BufNewFile', {
   pattern = { '*.cpp', '*.h', '*.c' }, -- apply to all new files; you can use e.g. "*.py", "*.c" etc.
   callback = function()
